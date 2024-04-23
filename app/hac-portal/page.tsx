@@ -1,8 +1,28 @@
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
-import HACTable from "@/components/HACTable";
-import { json } from "stream/consumers";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Key } from "react";
+
+type Incident = {
+  id: Key;
+  date_time_of_incident: string;
+  category: string;
+  type: string;
+  cause: string;
+  description: string;
+  district: string;
+  ds_div: string;
+  gn_div: string;
+};
 
 const headers = {
   accept: "application/json",
@@ -24,6 +44,41 @@ async function getData() {
   return res.json();
 }
 
+const HACTable = (data: Incident[]) => {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Date & Time</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Cause</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead>District</TableHead>
+          <TableHead>DS Div</TableHead>
+          <TableHead>GN Div</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data.map((item: Incident) => (
+          <TableRow key={item.id}>
+            <TableCell className="font-medium">
+              {item.date_time_of_incident}
+            </TableCell>
+            <TableCell>{item.category}</TableCell>
+            <TableCell>{item.type}</TableCell>
+            <TableCell>{item.cause}</TableCell>
+            <TableCell>{item.description}</TableCell>
+            <TableCell>{item.district}</TableCell>
+            <TableCell>{item.ds_div}</TableCell>
+            <TableCell>{item.gn_div}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+
 export default async function HACPortal() {
   const data = await getData();
 
@@ -32,10 +87,7 @@ export default async function HACPortal() {
       <Sidebar brandLabel="Rethink Wildlife" />
       <div className="flex flex-col">
         <Header brandLabel="Rethink Wildlife" />
-        <Main
-          title="HAC Portal"
-          tiles={<HACTable data={JSON.stringify(data.rows)} />}
-        />
+        <Main title="HAC Portal" tiles={HACTable(data.rows)} />
       </div>
     </div>
   );
