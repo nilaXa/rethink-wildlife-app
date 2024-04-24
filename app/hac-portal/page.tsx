@@ -11,6 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Key } from "react";
+import getConfig from "next/config";
+
+const publicRuntimeConfig = getConfig();
+const envConfig = process.env.API_URL ? process.env : publicRuntimeConfig;
 
 type Incident = {
   id: Key;
@@ -26,11 +30,11 @@ type Incident = {
 
 const headers = {
   accept: "application/json",
-  Authorization: `Bearer ${process.env.API_ACCESS_TOKEN}`,
+  Authorization: `Bearer ${envConfig.API_ACCESS_TOKEN}`,
 };
 
 async function getData() {
-  const res = await fetch(process.env.API_URL + "/hac/incidents", {
+  const res = await fetch(envConfig.API_URL + "/hac/incidents", {
     headers: headers,
   });
   // The return value is *not* serialized
