@@ -34,9 +34,15 @@ const headers = {
 };
 
 async function getData() {
-  const res = await fetch(envConfig.API_URL + "/hac/incidents", {
-    headers: headers,
-  });
+  const res = await fetch(
+    (envConfig.API_URL
+      ? envConfig.API_URL
+      : "/choreo-apis/psmc/rethinkwildlife-hac-incidents-service/rethinkwildlife-rest-endpoint-2a3/v1.0") +
+      "/hac/incidents",
+    {
+      headers: headers,
+    }
+  );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
