@@ -5,6 +5,7 @@ const nextConfig = {
       "/choreo-apis/psmc/rethinkwildlife-hac-incidents-service/rethinkwildlife-rest-endpoint-2a3/v1.0",
     API_ACCESS_TOKEN: process.env.API_ACCESS_TOKEN || "",
   },
+  output: "standalone",
 };
 
 export default nextConfig;
